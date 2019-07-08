@@ -93,6 +93,11 @@ defimpl ExAws.Dynamo.Encodable, for: Map do
 end
 
 defimpl ExAws.Dynamo.Encodable, for: BitString do
+  @empty_string_code "*_*EMPTY_STRING*_*"
+  def encode("", _) do
+    %{"S" => @empty_string_code}
+  end
+
   def encode(val, _) do
     %{"S" => val}
   end

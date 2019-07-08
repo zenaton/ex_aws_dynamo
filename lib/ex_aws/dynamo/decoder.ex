@@ -8,6 +8,8 @@ defmodule ExAws.Dynamo.Decoder do
   This is important for handling nested maps if you wanted the nested maps
   to have atom keys.
   """
+  @empty_string_code "*_*EMPTY_STRING*_*"
+
   def decode(item, as: struct_module) do
     item
     |> decode
@@ -29,6 +31,7 @@ defmodule ExAws.Dynamo.Decoder do
   def decode(%{"NULL" => true}), do: nil
   def decode(%{"NULL" => "true"}), do: nil
   def decode(%{"B" => value}), do: value
+  def decode(%{"S" => @empty_string_code}), do: ""
   def decode(%{"S" => value}), do: value
   def decode(%{"M" => value}), do: value |> decode
   def decode(%{"SS" => values}), do: values
